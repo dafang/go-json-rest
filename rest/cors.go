@@ -121,9 +121,8 @@ func (mw *CorsMiddleware) MiddlewareFunc(handler HandlerFunc) HandlerFunc {
 		}
 
 		// Non-preflight requests
-		for _, exposed := range mw.AccessControlExposeHeaders {
-			writer.Header().Add("Access-Control-Expose-Headers", exposed)
-		}
+		writer.Header().Set("Access-Control-Expose-Headers", strings.Join(mw.AccessControlExposeHeaders, ","))
+
 		writer.Header().Set("Access-Control-Allow-Origin", corsInfo.Origin)
 		if mw.AccessControlAllowCredentials == true {
 			writer.Header().Set("Access-Control-Allow-Credentials", "true")

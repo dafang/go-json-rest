@@ -107,6 +107,9 @@ func (r *Request) GetCorsInfo() *CorsInfo {
 	}
 
 	reqMethod := r.Header.Get("Access-Control-Request-Method")
+	if "" == reqMethod {
+		reqMethod = r.Method
+	}
 
 	reqHeaders := []string{}
 	rawReqHeaders := r.Header[http.CanonicalHeaderKey("Access-Control-Request-Headers")]
@@ -117,7 +120,7 @@ func (r *Request) GetCorsInfo() *CorsInfo {
 		}
 	}
 
-	isPreflight := isCors && r.Method == "OPTIONS" && reqMethod != ""
+	isPreflight := isCors && r.Method == "OPTIONS"
 
 	return &CorsInfo{
 		IsCors:                      isCors,
